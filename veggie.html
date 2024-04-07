@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="navbar.css">
+
+    <link rel="stylesheet" href="breakfast.css">
+    <title>Menus</title>
+</head>
+<body>
+    <ul class="topnav">
+        <li><a href="index.html">All Menus</a></li>
+        <li><a  href="breakfast.html">Breakfast</a></li>        
+        <li><a href="lunch.html">Lunch</a></li>
+        <li><a href="dinner.html">Dinner</a></li>
+        <li><a class="active" href="veggie.html">Vegetarian</a></li>
+        <li class="right"><a  href="login.html">Login</a></li>
+
+    </ul>
+
+    <div id="vegetarian" class="cards"></div>
+    <script src="configuration.js"></script>
+    <script>
+      let host = getHost();
+      let items = [];
+      displayItems();
+
+      async function getAll() {
+        const headers = {"Authorization": `Bearer ${configuration.token()}`};
+        let response = await fetch(host + "/vegetarian", {headers});
+        if (response.status == 401) {
+          logout();
+        }
+        let result = await response.json();
+        return result;
+      }
+
+      async function displayItems() {
+        if (items.length == 0) {
+          items = await getAll();
+        }
+
+        let vegetarian = document.getElementById("vegetarian");
+        vegetarian.innerHTML = "";
+
+        for (let item of items) {
+
+          let div = document.createElement("div");
+          div.className = "card";
+          let innerHtml = `
+            <p>Name: ${item.name}</p>
+            <p>Description: ${item.description}</p>
+            <p>Vegetarian: ${item.vegetarian ? "yes" : "no"}</p>
+            <p>Price: ${item.price}</p>
+            `;
+          div.innerHTML = innerHtml;
+          vegetarian.appendChild(div);
+        }
+      }
+    </script>
+
+
+    
+</body>
+</html>
