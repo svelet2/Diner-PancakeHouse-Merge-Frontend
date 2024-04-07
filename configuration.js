@@ -1,7 +1,7 @@
 const mode = 0;
 
 const host_local = "http://localhost:8080";
-const host_remote = "https://ducks-service-svelet2.onrender.com";
+const host_remote = "https://diner-pancakehouse-merge-backend-svelet2.onrender.com";
 
 function getHost() {
     return (mode == 0) ? host_local : host_remote;
